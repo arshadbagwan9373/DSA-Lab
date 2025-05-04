@@ -1,104 +1,68 @@
-class hashtable:
-	def __init__(self,m):
-		self.m=m
-		self.hash_table=[None]*m
-		self.hash_table2=[None]*m
-		self.element_count=0
-		
-		
-	def h(self,key,m):
-		return key%m
-		
-	def h2(self,key):
-		return key%5
-		
-	def isfull(self):
-		if element_count>=m:
-			print("Hashtable is Full !!!!!!!!!!")
-	
-	def linear_prob(self,key,data):
-		ind=self.h(key,self.m)
-		if self.hash_table[ind]==None:
-			self.hash_table[ind]=data
-			self.element_count+=1
-		else:
-			while(self.hash_table[ind]!=None):
-				ind+=1
-				if self.hash_table[ind]==None:
-					self.hash_table[ind]=data
-					self.element_count+=1
-					break
-		print(self.hash_table)
-				
-	def double_hash(self,key,data):
-		ind=self.h(key,self.m)
-		i=0
-		if self.hash_table2[ind]==None:
-			self.hash_table2[ind]=data
-			#self.element_count+=1
-		else:
-			while(i<=self.m):
-				ind=(self.h(key,self.m)+i*self.h2(key))%self.m
-				if self.hash_table2[ind]==None:
-					self.hash_table2[ind]=data
-					##self.element_count+=1
-					break
-				i+=1
-		print(self.hash_table2)
-		
-		
-		
-	def search_linear(self,key):
-		ind=self.h(key,self.m)
-		if self.hash_table[ind]!=None:
-					
-			if self.hash_table[ind][0]==key:
-				print("key Found in Hashtable !!!")
-			else:
-				i=0
-				while(i<=self.m):
-					ind+=1
-					if ind==self.m:
-						ind=0
-					if self.hash_table[ind][0]==key and self.hash_table[ind]!=None:
-						print("key Found !!!")
-						break
-					
-					i+=1
-		else:
-			print("Not found")
-			
-		
-			
-hash=hashtable(10)	
+class hasht:
+    hashtable = []
+    m=0
+    def __init__(self,n):
+        self.m=n
+        self.hashtable = [None]*n
+
+    def div_hash(self,key):
+        return key%self.m
+    
+    def insert(self,key,data):
+        i = self.div_hash(key)
+        if self.hashtable[i]==None:
+            self.hashtable[i]=[key,[key,data]]
+            print("Data inserted !!!")
+        else:
+            print("Collision Occured ****")
+            print("Handling collision.......")
+            self.collision_resolve(key,data)
+
+    def display(self):
+        for i in range(0,self.m):
+            print(self.hashtable[i])
+
+    def collision_resolve(self,k,d):
+        print("1.Linear Probing")
+        print("2.Quadratic Probing")
+        c = int(input("Select Collision Resolution Technique :"))
+        if c==1:
+            
+            #----linear probing --------
+             i = self.div_hash(k)
+             while(i!=self.m-1):
+                 if self.hashtable[i]!=None:
+                     i+=1
+                 else:
+                     self.hashtable[i]=[k,[k,d]]
+                     print("Data Inserted !!! ( Linear Probing )")
+                     break
+            
+
+        elif c==2:
+            #------quadratic probing ------
+            ind = self.div_hash(k)
+            i=1
+            while(i<=self.m-1):
+                 if self.hashtable[ind]!=None:
+                     ind = (ind + i*i)%self.m
+                     i+=1
+
+                 else:
+                     self.hashtable[ind]=[k,[k,d]]
+                     print("Data Inserted !!!  ( Quadratic probing )")
+                     break
+
+            
+s = int(input("Enter Hashtable Size :"))
+h=hasht(s)
 while(True):
-
-	print("*******MENU*******")
-	print("1.Insert using linear probing")
-	print("2.Insert using double hashing")
-	print("3.Search using linear")
-	print("4.Exit")
-	ch=int(input("Enter your Choice :"))
-
-	if ch==1:
-		key=int(input("Enter tel No :"))
-		data=input("Enter name :")
-		hash.linear_prob(key,[key,data])
-		
-	if ch==2:
-		key=int(input("Enter tel No :"))
-		data=input("Enter name :")
-		hash.double_hash(key,[key,data])
-		
-	if ch==3:
-		key=int(input("Enter key to Search :"))
-		hash.search_linear(key)
-		
-	if ch==4:
-		print("Exit Succesfully !!!!")
-		break
-	
-	
-	
-		
-	
+    print("1.Add Data")
+    print("2.Show table")
+    ch= int(input("Enter your choice :"))
+    if ch==1:
+        tel = int(input("Enter Telephone Number :"))
+        name = input("Enter Name :")
+        h.insert(tel,name)
+    elif ch==2:
+        h.display()
