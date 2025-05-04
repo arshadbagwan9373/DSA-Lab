@@ -1,99 +1,88 @@
 #include<iostream>
-#include<cstdlib>
-#include<string.h>
+#include<strings.h>
 using namespace std;
 
-struct node{
-	char label[10];
-	int ch_count;
-	struct node *child[10];
-	}*root;
-	
-	class GT{
-	public:
-	void create_tree();
-	void display(node *r1);
-	
-	GT(){
-	root=NULL;
-	}
-	};
-	
-	void GT::create_tree(){
-	int tbooks,tchapters,i,j,k;
-	root=new node;
-	cout<<"Enter name of book:";
-	cin>>root->label;
-	cout<<"Enter no.of chapters in book";
-	cin>>tchapters;
-	root->ch_count=tchapters;
-	
-	for(i=0;i<tchapters;i++){
-		root->child[i]=new node;
-		cout<<"Enter chapter name:";
-		cin>>root->child[i]->label;
-		cout<<"Enter number of section in chapters "<<root->child[i]->label<<":";
-		cin>>root->child[i]->ch_count;
-		
-		for (j=0;j<root->child[i]->ch_count;j++){
-		root->child[i]->child[j]=new node;
-		cout<<"Enter section "<<j+1<<"name :";
-		cin>>root->child[i]->child[j]->label;
-		//cout<<"Enter number of subsections:"<<r1->child[i]->child[j]->label;
-		//cin>>r1->child[i]->ch_count;
-		}
-		}
-		}
-		
-	void GT::display(node *r1){
-	int i,j,k,tchapters;
-	if(r1!=NULL){
-	cout<<"Book Hierarchy----\n";
-	cout<<"Book Title :"<<r1->label;
-	tchapters=r1->ch_count;
-	for(i=0;i<tchapters;i++){
-	cout<<"\nChapter"<<i+1;
-	cout<<""<<r1->child[i]->label;
-	cout<<"\nSections :";
-	
-	for(j=0;j<r1->child[i]->ch_count;j++){
-		//cout<<r1->child[i]->child[j]->label;
-		cout<<r1->child[i]->child[j]->label;
-	
-	}
-	
-	
-	
-	}
-	}
-	}
-	
-	int main(){
-	int choice;
-	GT gt;
-	while(1){
-	
-	cout<<"--------------"<<endl;
-	cout<<"Book tree creation"<<endl;
-	cout<<"----------------"<<endl;
-	cout<<"1.Create"<<endl;
-	cout<<"2.Display"<<endl;
-	cout<<"3.Quit"<<endl;
-	cout<<"Enter your choice :";
-	cin>>choice;
-	
-	switch(choice){
-	case 1:gt.create_tree();break;
-	case 2:gt.display(root);break;
-	case 3: exit(1);
-	
-	default:cout<<"Wrong choice"<<endl;	
-	
-	
-	
-	}
-	}
+struct Node{
+    string name;
+    int count;
+    Node *childs[10];
+}*root;
 
-	}
-	 
+class GTree{
+
+    public:
+    GTree(){
+        root = NULL;
+    }
+
+    void insert_data(){
+        root = new Node;
+         cout<<"Enter Book Name :";
+         cin>>root->name;
+         cout<<"Enter Number of chapters :";
+         cin>>root->count;
+         for(int i=0;i<root->count;i++){
+            root->childs[i]=new Node;
+            cout<<"Enter Name of Chapter "<<i+1<<":";
+            cin>>root->childs[i]->name;
+            cout<<"Enter Number of Sections in Chapter "<<i+1<<":";
+            cin>>root->childs[i]->count;
+            
+            for (int j=0;j<root->childs[i]->count;j++){
+                root->childs[i]->childs[j]= new Node;
+                cout<<"Enter Name of Section "<<j+1<<":";
+                cin>>root->childs[i]->childs[j]->name;
+                cout<<"Enter Number of Subsections in section "<<j+1<<":";
+                cin>>root->childs[i]->childs[j]->count;
+            }
+
+         }
+    }
+
+
+    void display(){
+        cout<<"----Tree Hierarchy------";
+        cout<<"Book Name :"<<root->name<<endl;
+        cout<<"Number of chapters in Book :"<<root->count<<endl;
+         for(int i=0;i<root->count;i++){
+            cout<<" Name of Chapter "<<i+1<<"---"<<root->childs[i]->name<<endl;
+            cout<<"Sections in Chapter "<<i+1<<"-----"<<endl;
+            for (int j=0;j<root->childs[i]->count;j++){
+                cout<<" Name of Section "<<j+1<<"---"<<root->childs[i]->childs[j]->name<<endl;
+                cout<<"Number of Subsections in section "<<j+1<<":"<<root->childs[i]->childs[j]->count<<endl;;
+            }
+
+         }
+        
+    }
+
+};
+
+int main(){
+    GTree gt;
+    int ch;
+    
+    while(1){
 	
+        cout<<"--------------"<<endl;
+        cout<<"---------GENERAL TREE IMPLEMENTATION------"<<endl;
+        cout<<"-----BOOK STRUCTURE-----------"<<endl;
+        cout<<"1.Create"<<endl;
+        cout<<"2.Display"<<endl;
+        cout<<"3.Quit"<<endl;
+        cout<<"Enter your choice :";
+        cin>>ch;
+        
+        switch(ch){
+        case 1:gt.insert_data();
+        break;
+        case 2:gt.display();
+        break;
+        case 3: exit(0);
+        
+        default:cout<<"Wrong choice"<<endl;	
+        
+        }
+        }
+    return 0;
+}
